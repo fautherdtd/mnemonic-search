@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"fmt"
+	"github.com/joho/godotenv"
 	"io"
 	"math/big"
 	"mm-core/pkg/alerts"
@@ -77,7 +78,9 @@ func splitToGroups(entropy []byte) []uint16 {
 }
 
 func lookupWords(groups []uint16) ([]string, error) {
-	dictionary, err := loadDictionary("resources/bip-random-0039.txt")
+	godotenv.Load()
+	bip := os.Getenv("BIP_DICT")
+	dictionary, err := loadDictionary("resources/" + bip + ".txt")
 	if err != nil {
 		return nil, err
 	}
